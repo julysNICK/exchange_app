@@ -1,3 +1,5 @@
+import 'package:exchange_app/screens/list_stocks/main.dart';
+import 'package:exchange_app/screens/stock_screen/main.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,6 +18,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+
+      // Rotas
+      routes: {
+        '/listStocks': (context) => const ListStocks(),
+        '/detailStock': (context) => DetailScreen(),
+      },
     );
   }
 }
@@ -47,22 +55,84 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: hexToColor('#F2C8A9'),
       drawer: Drawer(
+        backgroundColor: hexToColor('#D19B61'),
         child: ListView(
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xFFE04A4C),
+            DrawerHeader(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const CardProfile(),
+                  Column(
+                    children: [
+                      const Text(
+                        'Julys Martins',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'PressStart2P',
+                          color: Colors.white,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          const Row(
+                            children: [
+                              Text("S"),
+                              Text(
+                                '1000,00',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: 'Press Start 2P',
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.02,
+                          ),
+                          const Row(
+                            children: [
+                              Text("S"),
+                              Text(
+                                '1000,00',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: 'Press Start 2P',
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  )
+                ],
               ),
-              child: Text('Drawer Header'),
             ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {},
+            ItemMenu(
+              title: "Home",
+              iconEx: Icons.home,
             ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {},
+            ItemMenu(
+              title: "Stocks",
+              iconEx: Icons.store,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ListStocks(),
+                  ),
+                );
+              },
             ),
+            ItemMenu(),
+            ItemMenu(),
+            ItemMenu(),
           ],
         ),
       ),
@@ -151,6 +221,45 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ItemMenu extends StatelessWidget {
+  String? title;
+  IconData? iconEx;
+  void Function()? onTap;
+  ItemMenu({
+    super.key,
+    this.title,
+    this.iconEx,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Row(
+        children: [
+          Icon(
+            iconEx ?? Icons.home,
+            color: Colors.white,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            title ?? "Home",
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'PressStart2P',
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+      onTap: onTap,
     );
   }
 }
